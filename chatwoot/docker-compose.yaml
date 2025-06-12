@@ -39,7 +39,7 @@ services:
       - POSTGRES_PASSWORD=password
       - REDIS_URL=redis://redis:6379
       - REDIS_PASSWORD=password
-      - FRONTEND_URL=https://chatwoot.dominio.com.br
+      - FRONTEND_URL=https://sloyalty.sctv.vn
     ports:
       - '3000:3000'
     depends_on:
@@ -95,15 +95,18 @@ services:
 
 
   wppconnect-server:
-    build: 
+    build:
+      context: .
       dockerfile: Dockerfile
-    restart: always
     image: wppconnect-server
     container_name: wppconnect-server
     hostname: wppconnect-server
-    entrypoint: docker-entrypoint.sh yarn start
+    environment:
+      - PORT=21465
+    entrypoint: yarn start
     ports:
       - '21465:21465'
+    restart: always
     depends_on:
       - postgres
       - redis

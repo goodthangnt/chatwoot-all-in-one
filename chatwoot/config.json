@@ -1,5 +1,5 @@
 {
-  "secretKey": "TOKEN",
+  "secretKey": "123456789qwertyuiopasdfghjkl",
   "host": "http://localhost",
   "port": "21465",
   "deviceName": "WppConnect",

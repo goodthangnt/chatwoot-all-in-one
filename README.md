@@ -1,101 +1,129 @@
-# chatwoot-all-in-one
+Aqui está a tradução para o **português do Brasil para o inglês** do guia de instalação e configuração do **Chatwoot-All-in-One**:
 
- 
-Pre requisitos
-ubuntu server 20.04
---------------------------
-#instalar o docker com o comando
+---
 
+### 📦 chatwoot-all-in-one
+
+### ✅ Prerequisites for Ubuntu Server 20.04
+
+#### Install Docker with the following command:
+
+```bash
 sudo curl -L https://get.docker.com | sh
+```
 
-adicionar seu usuario no grupo docker * após adicionar o usuario entre no seu ssh novamente
+#### Add your user to the Docker group
 
+*After adding the user, re-login to your SSH session:*
+
+```bash
 sudo usermod -aG docker $USER
+```
 
----------------------
-#clonar repositorio
+#### Clone the repository
 
+```bash
 git clone https://github.com/edcarlosm/chatwoot-all-in-one.git
+```
 
-entre na pasta chatwoot
+Enter the `chatwoot` folder.
 
-edite os sequintes arquivos.
+#### Edit the following files:
 
-config.json coloque um token nesse campo aqui secretKey": "TOKEN"
+* In `config.json`, set a token here:
+  `"secretKey": "TOKEN"`
 
-edite o docker-compose 
+* Edit the `docker-compose` file:
 
-Coloque uma senha pessoal nesse campo aqui - POSTGRES_PASSWORD=password
+  Set your own password here:
+  `POSTGRES_PASSWORD=password`
 
-se for utilizar um dominio no seu chatwoot coloque a informação aqui - FRONTEND_URL=https://chatwoot.dominio.com.br
+  If you’re using a domain with your Chatwoot instance, set it here:
+  `FRONTEND_URL=https://chatwoot.yourdomain.com`
 
--------
+#### Prepare Docker *(this might take a while depending on your internet connection)*
 
-#prepare o docker * vai demorar um pouco dependendo da sua internet
-
+```bash
 docker compose up --build --no-start
+```
 
-Prepare o banco de dados
+#### Prepare the database
 
+```bash
 docker compose run --rm rails bundle exec rails db:chatwoot_prepare
+```
 
-inicie o docker
+#### Start the containers
 
+```bash
 docker compose up -d
+```
 
--------------
-#passos para instalação no ip local(sem dominio)
+---
 
-acesse o ip vm( http://ip-vm:3000
+### 🖥️ Steps for installing on local IP (no domain):
 
-acesse o super_admin
+* Access the VM's IP:
+  `http://your-vm-ip:3000`
 
-crie um bot, pegue o token do bot, edite o bot cliado para adicionar o Outgoing url
+* Log in as super\_admin
 
-coloque as seguintes informações 
+* Create a bot, get the bot token, then edit the created bot to add the **Outgoing URL**.
 
-http://bridge:3000/chatwoot/webhook?botpress_bot_id=bot&chatwoot_bot_token=token-do-agente-bot *obs se alterar o id do bot lembrar de alterar nesse link tb.
+Use the following info:
 
------------
-#edite novamente o docker-compose 
+```
+http://bridge:3000/chatwoot/webhook?botpress_bot_id=bot&chatwoot_bot_token=your-bot-token
+```
 
+*Note: If you change the bot ID, remember to update it in the URL above.*
 
-Coloque o token do seu bot aqui  - CHATWOOT_BOT_TOKEN=TOKEN-BOT-CHATWOOT
+#### Edit `docker-compose` again:
 
-se for criar um bot com id diferente de 'bot' faça a alteração aqui - BOTPRESS_BOT_ID=bot *obs esse bot é criado no botpress
+* Set your bot token here:
+  `CHATWOOT_BOT_TOKEN=YOUR-BOT-TOKEN`
 
--------------------
+* If you're using a bot ID different from `bot`, change it here too:
+  `BOTPRESS_BOT_ID=bot`
+  *Note: this bot is created in Botpress*
 
-no chatwoot crie uma caixa de entrada do tipo api
+---
 
-coloque o nome preferido e coloque esse link aqui como api http://wppconnect-server:21465/api/minhasala/chatwoot
+### 📥 In Chatwoot:
 
-nesse mesma caixa adicione o bot criado no chatwoot.
+* Create an inbox of type API
+* Give it a preferred name and use this API link:
+  `http://wppconnect-server:21465/api/minhasala/chatwoot`
+* In this inbox, add the bot you created in Chatwoot.
+* Add a contact with the number `+5511999999999` – this contact will be responsible for starting WPPConnect.
 
-adicione um contato com o numero +5511999999999 esse contato vai ser responsavel para dar o start no wppc
+---
 
-----------------------------------
-acesse o n8n importe o flow que está nesse git, altere o token do usuario do chatwoot e token do wppc.
+### ⚙️ In n8n:
 
-vá no contato criado e de um /start minhasala
+* Import the flow from the repository
+* Update the Chatwoot user token and WPPConnect token.
+* Go to the contact you created and send `/start minhasala`
+* Now wait – the QR code will appear.
 
-agora é só esperar que vai aparecer o qrcode.
+---
 
-para mais informações segue os links de fontes utilizadas.
+### 📚 Additional Resources
 
-link referente ao integrador do bot
+* **Bot Integrator article** (LinkedIn):
+  [https://www.linkedin.com/pulse/subindo-um-ambiente-de-desenvolvimento-chatbot-poderoso-douglas-lara/](https://www.linkedin.com/pulse/subindo-um-ambiente-de-desenvolvimento-chatbot-poderoso-douglas-lara/)
 
-https://www.linkedin.com/pulse/subindo-um-ambiente-de-desenvolvimento-chatbot-poderoso-douglas-lara/
+* **Installation & Configuration Videos (Chatwoot + n8n + WPPConnect)**
+  [Video 1](https://www.youtube.com/watch?v=A4QsJvJMWIA&list=WL)
+  [Video 2](https://www.youtube.com/watch?v=00616mTid-M)
 
-link referente a os videos de instalação e configuração o chatwoot+n8n+wppconnect
+---
 
-https://www.youtube.com/watch?v=A4QsJvJMWIA&list=WL
+💬 *It took a lot of work to gather all this information. I’ll improve this documentation as soon as I have time.*
 
-https://www.youtube.com/watch?v=00616mTid-M
+💖 *If you’d like to support me via Pix, here’s my key:*
+`edcarlos@kabaweb.in`
 
---------------------------------------------
+---
 
-Deu muito trabalho consegui todas essas informações, assim que tiver um tempo coloco melhoro essa cocumentação
-
-
-se quiser me ajudar com pix minha chave é edcarlos@kabaweb.in
+Let me know if you want a version of this as a `.md` file or documentation page!

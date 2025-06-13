@@ -72,26 +72,12 @@ services:
       - RAILS_ENV=production
       - RAILS_LOG_TO_STDOUT=true
       - SECRET_KEY_BASE=Testing1234
-      - BOTPRESS_ENDPOINT=http://botpress:3000
+      - BOTPRESS_ENDPOINT=http://botpress:3001
       - BOTPRESS_BOT_ID=bot
       - CHATWOOT_ENDPOINT=http://chatwoot:3000
       - CHATWOOT_BOT_TOKEN=TOKEN-BOT-CHATWOOT
     ports:
       - '3002:3000'
-
-  n8n:
-    image: n8nio/n8n    
-    volumes:
-      - ./n8n:/home/node/.n8n 
-    hostname: n8n
-    command: n8n start --tunnel  
-    ports:
-      - '5678:5678'
-    depends_on:
-      - postgres
-      - redis
-      - chatwoot
-      - wppconnect-server
 
 
   wppconnect-server:
@@ -111,8 +97,26 @@ services:
       - postgres
       - redis
       - chatwoot
- 
+
+  n8n:
+    image: n8nio/n8n
+    container_name: chatwoot-n8n
+    ports:
+      - "5678:5678"
+    volumes:
+      - n8n_data:/home/node/.n8n
+    environment:
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+    command: n8n start --tunnel
+    restart: always
+    depends_on:
+      - postgres
+      - redis
+      - chatwoot
+      - wppconnect-server
+
 volumes:
   postgres:
   redis:
+  n8n_data:
 
